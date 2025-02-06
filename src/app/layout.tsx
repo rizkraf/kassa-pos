@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { DM_Sans } from 'next/font/google'
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
@@ -11,11 +11,16 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${dmSans.className}`}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
