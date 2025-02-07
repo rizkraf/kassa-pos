@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const onboardingSchema = z.object({
   name: z.string().min(2),
@@ -22,6 +24,8 @@ const onboardingSchema = z.object({
 });
 
 export function OnboardingForm() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof onboardingSchema>>({
     resolver: zodResolver(onboardingSchema),
     defaultValues: {
@@ -32,8 +36,36 @@ export function OnboardingForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof onboardingSchema>) {
-    console.log(values);
+  function slugify(text: string) {
+    return text
+      .toString()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9 ]/g, "")
+      .replace(/\s+/g, "-");
+  }
+
+  async function onSubmit(values: z.infer<typeof onboardingSchema>) {
+    const { error, data } = await authClient.organization.create({
+      name: values.name,
+      slug: slugify(values.name),
+      metadata: {
+        email: values.email,
+        address: values.address,
+        phone: values.phone,
+      },
+    });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (data) {
+      router.push("/dashboard");
+    }
   }
 
   return (

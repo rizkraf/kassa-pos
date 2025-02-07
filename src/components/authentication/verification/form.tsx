@@ -1,6 +1,6 @@
 "use client";
 
-import { z } from "zod";
+import { type z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -13,12 +13,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-const verificationSchema = z.object({
-  verification_code: z.string().length(6),
-});
+import { verificationSchema } from "./schema";
+import { authClient } from "@/lib/auth-client";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export function VerificationForm() {
+  const params = useSearchParams();
+  const email = params.get("email");
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof verificationSchema>>({
     resolver: zodResolver(verificationSchema),
     defaultValues: {
@@ -26,8 +29,36 @@ export function VerificationForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof verificationSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof verificationSchema>) {
+    const { error, data } = await authClient.emailOtp.verifyEmail({
+      email: email!,
+      otp: values.verification_code,
+    });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (data) {
+      router.push("/onboarding");
+    }
+  }
+
+  async function resendOtp() {
+    const { error, data } = await authClient.emailOtp.sendVerificationOtp({
+      email: email!,
+      type: "email-verification",
+    });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (data) {
+      console.log("OTP sent");
+    }
   }
 
   return (
@@ -53,7 +84,12 @@ export function VerificationForm() {
           <p className="text-sm text-muted-foreground">
             Haven’t received a code yet?
           </p>
-          <Button variant="link" className="h-fit p-0 font-bold">
+          <Button
+            type="button"
+            onClick={resendOtp}
+            variant="link"
+            className="h-fit p-0 font-bold"
+          >
             Resend Code
           </Button>
         </div>
