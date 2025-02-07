@@ -1,7 +1,7 @@
 import { ForgotPasswordForm } from "@/components/authentication/forgot-password/form";
 import { KassaCard } from "@/components/kassa-card";
 
-export default function Verification() {
+export default function ForgotPassword() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-background">
       <KassaCard

@@ -1,15 +1,16 @@
-import { ResetPasswordForm } from "@/components/authentication/reset-password/form";
-import { KassaCard } from "@/components/kassa-card";
 
-export default function ResetPassword() {
+import { KassaCard } from "@/components/kassa-card";
+import { OnboardingForm } from "@/components/onboarding/form";
+
+export default function Onboarding() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-background">
       <KassaCard
-        title="Create a new password"
-        description="Enter your new password."
+        title="Create a new store"
+        description="Your journey starts here! "
         imageLogo="/logo-card.png"
       >
-        <ResetPasswordForm />
+        <OnboardingForm />
       </KassaCard>
     </main>
   );
