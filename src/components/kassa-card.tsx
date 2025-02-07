@@ -21,7 +21,7 @@ export function KassaCard({
   imageLogo,
 }: KassaCardProps) {
   return (
-    <Card className="w-[32rem] border-none bg-transparent shadow-none">
+    <Card className="w-[34rem] border-none bg-transparent shadow-none">
       <CardHeader className="flex flex-row p-0">
         <div className="rounded-b-3xl bg-background py-3 pr-3">
           <Image
