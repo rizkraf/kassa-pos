@@ -28,6 +28,8 @@ export function Header() {
     });
   }
 
+  console.log(pathname)
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="mx-auto w-full">
@@ -50,7 +52,7 @@ export function Header() {
               <Link
                 className={
                   pathname === "/dashboard/orders"
-                    ? "text-secondary"
+                    ? "font-bold text-secondary"
                     : "text-foreground"
                 }
                 href="/dashboard/orders"
@@ -60,7 +62,7 @@ export function Header() {
               <Link
                 className={
                   pathname === "/dashboard/customers"
-                    ? "text-secondary"
+                    ? "font-bold text-secondary"
                     : "text-foreground"
                 }
                 href="/dashboard/customers"
@@ -69,11 +71,11 @@ export function Header() {
               </Link>
               <Link
                 className={
-                  pathname === "/dashboard/products"
-                    ? "text-secondary"
+                  pathname === "/dashboard/setting"
+                    ? "font-bold text-secondary"
                     : "text-foreground"
                 }
-                href="/dashboard/products"
+                href="/dashboard/setting"
               >
                 Setting
               </Link>
