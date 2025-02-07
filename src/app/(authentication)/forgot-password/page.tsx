@@ -3,7 +3,7 @@ import { KassaCard } from "@/components/kassa-card";
 
 export default function ForgotPassword() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background">
+    <main className="flex min-h-screen items-center justify-center">
       <KassaCard
         title="Forgot password"
         description="Enter your email address to reset your password."

@@ -3,7 +3,7 @@ import { KassaCard } from "@/components/kassa-card";
 
 export default function ResetPassword() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background">
+    <main className="flex min-h-screen items-center justify-center">
       <KassaCard
         title="Create a new password"
         description="Enter your new password."

@@ -48,23 +48,29 @@ export function OnboardingForm() {
   }
 
   async function onSubmit(values: z.infer<typeof onboardingSchema>) {
-    const { error, data } = await authClient.organization.create({
-      name: values.name,
-      slug: slugify(values.name),
-      metadata: {
-        email: values.email,
-        address: values.address,
-        phone: values.phone,
-      },
-    });
+    try {
+      const { error, data } = await authClient.organization.create({
+        name: values.name,
+        slug: slugify(values.name),
+        metadata: {
+          email: values.email,
+          address: values.address,
+          phone: values.phone,
+        },
+      });
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+      if (error) throw new Error(error.message);
 
-    if (data) {
+      const { error: errorOrganization } =
+        await authClient.organization.setActive({
+          organizationId: data.id,
+        });
+
+      if (errorOrganization) throw new Error(errorOrganization.message);
+
       router.push("/dashboard");
+    } catch (err) {
+      console.error(err);
     }
   }
 

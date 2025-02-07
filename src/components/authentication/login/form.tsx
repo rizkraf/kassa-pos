@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Link as LucideLink } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -23,6 +25,7 @@ const loginSchema = z.object({
 });
 
 export function LoginForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -31,8 +34,32 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    try {
+      const { error, data } = await authClient.signIn.email({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data) {
+        const { data: organizations } = await authClient.organization.list();
+        if (organizations && organizations.length > 0) {
+          await authClient.organization.setActive({
+            organizationId: organizations?.[0]?.id,
+          });
+          router.push("/dashboard");
+        } else {
+          console.error("No organizations found");
+        }
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred:", err);
+    }
   }
 
   return (
