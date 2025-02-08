@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { slugify } from "@/lib/slugify";
 
 const onboardingSchema = z.object({
   name: z.string().min(2),
@@ -35,17 +36,6 @@ export function OnboardingForm() {
       phone: "",
     },
   });
-
-  function slugify(text: string) {
-    return text
-      .toString()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9 ]/g, "")
-      .replace(/\s+/g, "-");
-  }
 
   async function onSubmit(values: z.infer<typeof onboardingSchema>) {
     try {

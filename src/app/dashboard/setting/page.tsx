@@ -1,3 +1,4 @@
+import { StoreSetting } from "@/components/setting/store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CircleUser, IdCard, Key, Pizza, Tag } from "lucide-react";
 
@@ -32,7 +33,7 @@ export default function DashboardSetting() {
       label: "Password",
       description: "Change your password",
       value: "password",
-    }
+    },
   ];
 
   return (
@@ -41,13 +42,13 @@ export default function DashboardSetting() {
       className="grid h-[calc(100vh-3.55rem)] grid-cols-12 gap-4"
       orientation="vertical"
     >
-      <div className="col-span-3 border-r border-border bg-card p-10 h-full">
-        <h2 className="text-2xl font-bold mb-6">Setting</h2>
-        <TabsList className="grid gap-4 w-full justify-normal bg-transparent">
+      <div className="col-span-3 h-full border-r border-border bg-card p-10">
+        <h2 className="mb-6 text-2xl font-bold">Setting</h2>
+        <TabsList className="grid w-full justify-normal gap-4 bg-transparent">
           {tabs.map((tab) => (
             <TabsTrigger
               key={tab.value}
-              className="w-full border border-border justify-normal px-[18px] py-2.5 data-[state=active]:bg-accent data-[state=active]:text-primary data-[state=active]:shadow-none"
+              className="w-full justify-normal border border-border px-[18px] py-2.5 data-[state=active]:bg-accent data-[state=active]:text-primary data-[state=active]:shadow-none"
               value={tab.value}
             >
               <div className="flex flex-row items-center gap-3">
@@ -61,10 +62,8 @@ export default function DashboardSetting() {
           ))}
         </TabsList>
       </div>
-      <TabsContent className="col-span-9 p-10 m-0" value="store">
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Store</h2>
-        </div>
+      <TabsContent className="col-span-9 m-0 p-10" value="store">
+        <StoreSetting />
       </TabsContent>
     </Tabs>
   );
