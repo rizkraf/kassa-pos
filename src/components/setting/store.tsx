@@ -44,6 +44,7 @@ type ActiveOrganization = {
 export function StoreSetting() {
   const { toast } = useToast();
   const { data: activeOrganization } = authClient.useActiveOrganization();
+  const { data: activeMember } = authClient.useActiveMember();
   const organization = useMemo(
     () => activeOrganization as ActiveOrganization,
     [activeOrganization],
@@ -81,7 +82,7 @@ export function StoreSetting() {
         toast({
           title: "Error",
           description: error.message,
-          variant: "destructive"
+          variant: "destructive",
         });
         return;
       }
@@ -103,18 +104,20 @@ export function StoreSetting() {
           <AvatarImage src={organization?.logo ?? undefined} />
           <AvatarFallback className="bg-card">K</AvatarFallback>
         </Avatar>
-        <div className="flex flex-row space-x-4">
-          <Button asChild className="cursor-pointer">
-            <Label htmlFor="upload-image">Change Profile</Label>
-          </Button>
-          <Button variant="destructiveOutline">Delete</Button>
-          <Input
-            id="upload-image"
-            type="file"
-            accept="image/png, image/jpeg"
-            className="hidden"
-          />
-        </div>
+        {activeMember?.role === "owner" && (
+          <div className="flex flex-row space-x-4">
+            <Button asChild className="cursor-pointer">
+              <Label htmlFor="upload-image">Change Profile</Label>
+            </Button>
+            <Button variant="destructiveOutline">Delete</Button>
+            <Input
+              id="upload-image"
+              type="file"
+              accept="image/png, image/jpeg"
+              className="hidden"
+            />
+          </div>
+        )}
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -125,7 +128,7 @@ export function StoreSetting() {
               <FormItem>
                 <FormLabel required>Store Name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input readOnly={activeMember?.role !== "owner"} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -139,7 +142,10 @@ export function StoreSetting() {
                 <FormItem>
                   <FormLabel required>Store Email</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      readOnly={activeMember?.role !== "owner"}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -152,7 +158,10 @@ export function StoreSetting() {
                 <FormItem>
                   <FormLabel required>Phone Number</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      readOnly={activeMember?.role !== "owner"}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,7 +175,7 @@ export function StoreSetting() {
               <FormItem>
                 <FormLabel required>Address</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input readOnly={activeMember?.role !== "owner"} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -176,12 +185,14 @@ export function StoreSetting() {
             This store was created on{" "}
             {activeOrganization?.createdAt.toDateString()}
           </p>
-          <div className="flex justify-end space-x-4">
-            <Button variant="outline" type="button" asChild>
-              <Link href="/dashboard">Cancel</Link>
-            </Button>
-            <Button type="submit">Save</Button>
-          </div>
+          {activeMember?.role === "owner" && (
+            <div className="flex justify-end space-x-4">
+              <Button variant="outline" type="button" asChild>
+                <Link href="/dashboard">Cancel</Link>
+              </Button>
+              <Button type="submit">Save</Button>
+            </div>
+          )}
         </form>
       </Form>
     </div>

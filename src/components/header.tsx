@@ -28,10 +28,8 @@ export function Header() {
     });
   }
 
-  console.log(pathname)
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-card backdrop-blur supports-[backdrop-filter]:bg-card/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-card">
       <div className="mx-auto w-full">
         <div className="container flex h-14 items-center px-4 lg:px-6 xl:px-8 2xl:px-10">
           <Link href="/">

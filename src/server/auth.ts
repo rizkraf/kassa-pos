@@ -15,6 +15,10 @@ export const auth = betterAuth({
   },
   emailVerification: {
     autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      console.log(url);
+      console.log(token);
+    },
   },
   plugins: [
     nextCookies(),

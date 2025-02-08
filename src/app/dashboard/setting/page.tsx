@@ -1,3 +1,4 @@
+import { StoreCashier } from "@/components/setting/cashier/index";
 import { StoreSetting } from "@/components/setting/store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CircleUser, IdCard, Key, Pizza, Tag } from "lucide-react";
@@ -64,6 +65,9 @@ export default function DashboardSetting() {
       </div>
       <TabsContent className="col-span-9 m-0 p-10" value="store">
         <StoreSetting />
+      </TabsContent>
+      <TabsContent className="col-span-9 m-0 p-10" value="cashier">
+        <StoreCashier />
       </TabsContent>
     </Tabs>
   );
